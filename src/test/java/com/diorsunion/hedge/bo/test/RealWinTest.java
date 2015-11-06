@@ -1,7 +1,7 @@
 package com.diorsunion.hedge.bo.test;
 
 import com.diorsunion.dbtest.spring.DBTestClassRunner;
-import com.diorsunion.hedge.algo.Oper3;
+import com.diorsunion.hedge.algo.Oper4;
 import com.diorsunion.hedge.bo.Operation;
 import com.diorsunion.hedge.bo.StockPriceInit;
 import com.diorsunion.hedge.bo.Win;
@@ -41,8 +41,8 @@ public class RealWinTest {
     static {
 //        opers.add(new Oper1(null));
 //        opers.add(new Oper2(null));
-        opers.add(new Oper3(ImmutableMap.of(Oper3.RATE, 1)));
-//        opers.add(new Oper4(ImmutableMap.of(Oper4.N, 2)));
+//        opers.add(new Oper3(ImmutableMap.of(Oper3.RATE, 1)));
+        opers.add(new Oper4(ImmutableMap.of(Oper4.N, 2)));
         try {
             begin = DateUtil.dateFormat.parse("2015-09-21");
             end = DateUtil.dateFormat.parse("2015-11-05");
