@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.diorsunion.hedge.dal.repository.StockRepository">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <sql id="select_common">
+        SELECT
+          id,
+          name,
+          code,
+          organization,
+          url,
+          sync_end_date syncEndDate
+        FROM stock
+    </sql>
+
+    <select id="get" resultType="Stock" useCache="true">
+        <include refid="select_common"/>
+        WHERE id = #{value}
+    </select>
+
+    <select id="findByIds" resultType="Stock" useCache="true">
+        <include refid="select_common"/>
+        <where>
+            <foreach collection="list" item="id" open=" id in (" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <insert id="insert">
+        insert into stock(name,code,organization,url)
+        values(#{name},#{code},#{organization},#{url})
+    </insert>
+
+    <update id="update">
+        update stock
+        <set>
+            <if test="syncEndDate!=null">
+                sync_end_date = #{syncEndDate},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

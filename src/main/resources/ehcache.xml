@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+        updateCheck="false" monitoring="off" dynamicConfig="false">
+    <diskStore path="java.io.tmpdir/EhCacheSpringAnnotationsExampleApp"/>
+
+    <defaultCache copyOnRead="true" copyOnWrite="true"
+                  eternal="false" maxElementsInMemory="1000" overflowToDisk="false"
+                  diskPersistent="false" timeToIdleSeconds="0" timeToLiveSeconds="36000"
+                  memoryStoreEvictionPolicy="LRU"/>
+
+    <!-- 1小时缓存 -->
+    <cache name="oneHourCache" copyOnRead="true" copyOnWrite="true"
+           eternal="false" maxElementsInMemory="100" overflowToDisk="false"
+           diskPersistent="false" timeToIdleSeconds="0" timeToLiveSeconds="3600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <!-- 半小时缓存 -->
+    <cache name="halfHourCache" copyOnRead="true" copyOnWrite="true"
+           eternal="false" maxElementsInMemory="100" overflowToDisk="false"
+           diskPersistent="false" timeToIdleSeconds="0" timeToLiveSeconds="1800"
+           memoryStoreEvictionPolicy="LRU"/>
+</ehcache>

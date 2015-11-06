@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <!--<localRepository>/java/resp</localRepository>-->
+    <pluginGroups></pluginGroups>
+    <proxies></proxies>
+
+    <mirrors>
+        <mirror>
+            <id>central-mirror</id>
+            <mirrorOf>central</mirrorOf>
+            <name>oschina mirror</name>
+            <url>http://maven.oschina.net/content/groups/public/</url>
+        </mirror>
+
+        <mirror>
+            <id>osc_thirdparty</id>
+            <mirrorOf>thirdparty</mirrorOf>
+            <url>http://maven.oschina.net/content/repositories/thirdparty/</url>
+        </mirror>
+    </mirrors>
+
+    <profiles>
+        <profile>
+            <id>main</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>http://maven.oschina.net/content/groups/public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+
+                <repository>
+                    <id>osc_thirdparty</id>
+                    <url>http://maven.oschina.net/content/repositories/thirdparty/</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>http://maven.oschina.net/content/groups/public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+    </profiles>
+    <activeProfiles>
+        <activeProfile>main</activeProfile>
+    </activeProfiles>
+</settings>

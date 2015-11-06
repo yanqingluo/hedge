@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.diorsunion.hedge.dal.repository.StockPriceRepository">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+    <resultMap id="StockPriceMap" type="StockPrice">
+        <id column="id" property="id"/>
+        <result column="thedate" property="thedate"/>
+        <result column="pre_date" property="preDate"/>
+        <result column="next_date" property="nextDate"/>
+        <result column="open" property="open"/>
+        <result column="close" property="close"/>
+        <result column="low" property="low"/>
+        <result column="high" property="high"/>
+        <result column="percent" property="percent"/>
+        <result column="chg" property="chg"/>
+        <result column="dea" property="dea"/>
+        <result column="dif" property="dif"/>
+        <result column="macd" property="macd"/>
+        <result column="ma5" property="ma5"/>
+        <result column="ma10" property="ma10"/>
+        <result column="ma20" property="ma20"/>
+        <result column="ma30" property="ma30"/>
+        <result column="turnrate" property="turnrate"/>
+        <result column="volume" property="volume"/>
+        <association property="stock" javaType="Stock">
+            <id column="stock_id" property="id"/>
+            <id column="stock_code" property="code"/>
+        </association>
+    </resultMap>
+
+    <select id="get" resultMap="StockPriceMap" useCache="true">
+        SELECT * FROM stock_price_${period}
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByIds" resultType="StockPrice" useCache="true">
+        SELECT * FROM stock_price_${period}
+        <where>
+            <foreach collection="list" item="id" open=" id in (" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="find" resultType="StockPrice" useCache="true">
+        SELECT * FROM stock_price_${period}
+        <where>
+            <if test="shareId!=null">
+                AND stock_id = #{stock.id}
+            </if>
+            <if test="thedate!=null">
+                AND thedate = #{thedate}
+            </if>
+        </where>
+    </select>
+
+    <select id="getMaxDate" resultType="java.util.Date">
+        <![CDATA[
+
+
+
+         select max(thedate) from   stock_price_${period} where thedate <= #{thedate} and stock_id = #{stock.id}
+
+
+
+        ]]>
+    </select>
+
+    <select id="findSharePrice" resultMap="StockPriceMap">
+        select
+        id,
+        stock_id,
+        stock_code,
+        thedate,
+        pre_date,
+        next_date,
+        open,
+        close,
+        low,
+        high,
+        percent,
+        chg,
+        dea,
+        dif,
+        macd,
+        ma5,
+        ma10,
+        ma20,
+        ma30,
+        turnrate,
+        volume
+        from stock_price_${period}
+        <where>
+            stock_id = #{stock.id}
+            <if test="begin!=null">
+                and thedate <![CDATA[ >= ]]> #{begin}
+            </if>
+            <if test="end!=null">
+                and thedate <![CDATA[ <= ]]> #{end}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="entity.id">
+        insert into stock_price_${period}
+        (
+        stock_id,
+        stock_code,
+        thedate,
+        pre_date,
+        next_date,
+        open,
+        close,
+        low,
+        high,
+        percent,
+        chg,
+        dea,
+        dif,
+        macd,
+        ma5,
+        ma10,
+        ma20,
+        ma30,
+        turnrate,
+        volume)
+        values(
+        #{entity.stock.id},
+        #{entity.stock.code},
+        #{entity.thedate},
+        #{entity.preDate},
+        #{entity.nextDate},
+        #{entity.open},
+        #{entity.close},
+        #{entity.low},
+        #{entity.high},
+        #{entity.percent},
+        #{entity.chg},
+        #{entity.dea},
+        #{entity.dif},
+        #{entity.macd},
+        #{entity.ma5},
+        #{entity.ma10},
+        #{entity.ma20},
+        #{entity.ma30},
+        #{entity.turnrate},
+        #{entity.volume})
+    </insert>
+
+    <delete id="delete">
+        delete from stock_price_${period}
+        where id=#{id}
+    </delete>
+</mapper>
