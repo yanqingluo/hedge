@@ -5,10 +5,10 @@ import com.diorsunion.hedge.algo.Oper2;
 import com.diorsunion.hedge.algo.Oper3;
 import com.diorsunion.hedge.algo.Oper4;
 import com.diorsunion.hedge.bo.stockdatainit.RandomStockPriceInit;
+import com.diorsunion.hedge.common.CalendarUtils;
 import com.diorsunion.hedge.dal.entity.Account;
 import com.diorsunion.hedge.dal.entity.Stock;
 import com.diorsunion.hedge.dal.entity.StockPrice;
-import com.diorsunion.hedge.util.DateUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
@@ -36,8 +36,8 @@ public class Win {
         opers.add(new Oper4(ImmutableMap.of(Oper4.N, 2)));
         dataPriceInit = new RandomStockPriceInit();
         try {
-            begin = DateUtil.dateFormat.parse("2015-01-01");
-            end = DateUtil.dateFormat.parse("2015-01-11");
+            begin = CalendarUtils.dateFormat.parse("2015-01-01");
+            end = CalendarUtils.dateFormat.parse("2015-01-11");
         } catch (ParseException e) {
             e.printStackTrace();
             System.exit(0);
@@ -76,7 +76,7 @@ public class Win {
     }
 
     public static void printStockDetail(int day, Date date, Account account, String oper) {
-        System.out.println("第" + (day) + "天," + DateUtil.dateFormat.format(date) + oper + ":\t" + account);
+        System.out.println("第" + (day) + "天," + CalendarUtils.dateFormat.format(date) + oper + ":\t" + account);
         account.stockWarehouse.forEach((stock, num) -> {
             StockPrice stockPrice = stock.getStockPrice(date);
             System.out.println("\t" + stock.name + ":数量" + num + ",价格:" + stockPrice + ",总价" + account.getStockValue(stock, StockPrice.PriceType.CLOSE));

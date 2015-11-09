@@ -1,6 +1,6 @@
 package com.diorsunion.hedge.dal.entity;
 
-import com.diorsunion.hedge.util.DateUtil;
+import com.diorsunion.hedge.common.CalendarUtils;
 import com.google.common.collect.Maps;
 
 import java.math.BigDecimal;
@@ -51,7 +51,7 @@ public class Account {
         }
         double cost = price * num;
         balance -= cost;//买股后增加这么多钱
-        System.out.println(DateUtil.getDateFormat(date) + ":用" + priceType.name +
+        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
                 "买入[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量:" + num + ",总共花费:" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }
@@ -78,7 +78,7 @@ public class Account {
         }
         double cost = price * num;
         balance -= cost;//买股后增加这么多钱
-        System.out.println(DateUtil.getDateFormat(date) + ":用" + priceType.name +
+        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
                 "买入[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量:" + num + ",总共花费" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }
@@ -105,7 +105,30 @@ public class Account {
         stockWarehouse.put(stock, stockWarehouse.get(stock) - num);
         double cost = price * num;
         balance += cost;//卖股后增加这么多钱
-        System.out.println(DateUtil.getDateFormat(date) + ":用" + priceType.name +
+        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
+                "卖出[" + stock.name + "],单价:" + String.format("%.2f", price) +
+                ",数量:" + num + ",总共获得" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
+    }
+
+
+    /**
+     * 卖出某只股的全部->清仓
+     *
+     * @param stock     卖什么股
+     * @param priceType 用什么价格来买股票[开盘价，收盘价，最高价，最低价]
+     */
+    public void sellAll(Stock stock, PriceType priceType) {
+        if (!stockWarehouse.containsKey(stock)) {
+            System.out.println("没有这只股票");
+            return;
+        }
+        StockPrice stockPrice = stock.getStockPrice(date);//获取当天的股票价格
+        double price = stockPrice.getPriceByType(priceType);
+        int num = stockWarehouse.get(stock);
+        stockWarehouse.put(stock, stockWarehouse.get(stock) - num);
+        double cost = price * num;
+        balance += cost;//卖股后增加这么多钱
+        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
                 "卖出[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量:" + num + ",总共获得" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }
@@ -127,7 +150,7 @@ public class Account {
         stockWarehouse.put(stock, stockWarehouse.get(stock) - num);
         double cost = price * num;
         balance += cost;//卖股后增加这么多钱
-        System.out.println(DateUtil.getDateFormat(date) +
+        System.out.println(CalendarUtils.getDateFormat(date) +
                 ":用" + priceType.name + "卖出[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量" + num + ",总共获得" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }

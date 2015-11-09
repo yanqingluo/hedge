@@ -1,9 +1,9 @@
 package com.diorsunion.hedge.bo.stockdatainit;
 
 import com.diorsunion.hedge.bo.StockPriceInit;
+import com.diorsunion.hedge.common.CalendarUtils;
 import com.diorsunion.hedge.dal.entity.Stock;
 import com.diorsunion.hedge.dal.entity.StockPrice;
-import com.diorsunion.hedge.util.DateUtil;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
@@ -55,16 +55,16 @@ public class RandomStockPriceInit implements StockPriceInit {
         stocks[1].setStockPrice(begin, stockPrice_1_begin);
         int i = 0;
         System.out.print("第" + (++i) + "天,");
-        System.out.print(stocks[0].name + ":\t" + DateUtil.dateFormat.format(begin) + ":\t" + String.format("%.2f", stocks[0].getStockPrice(begin).close) + ":\t+ 0%");
-        System.out.println("\t" + stocks[1].name + ":\t" + DateUtil.dateFormat.format(begin) + ":\t" + String.format("%.2f", stocks[1].getStockPrice(begin).close) + ":\t- 0%");
-        for (Date date = DateUtil.addDate(begin, 1); date.getTime() <= end.getTime(); date = DateUtil.addDate(date, 1)) {
+        System.out.print(stocks[0].name + ":\t" + CalendarUtils.dateFormat.format(begin) + ":\t" + String.format("%.2f", stocks[0].getStockPrice(begin).close) + ":\t+ 0%");
+        System.out.println("\t" + stocks[1].name + ":\t" + CalendarUtils.dateFormat.format(begin) + ":\t" + String.format("%.2f", stocks[1].getStockPrice(begin).close) + ":\t- 0%");
+        for (Date date = CalendarUtils.addDate(begin, 1); date.getTime() <= end.getTime(); date = CalendarUtils.addDate(date, 1)) {
             dates.add(date);
             boolean b = getRandomUD();//获取随机涨跌
             double r = getRandomRate();//获取随机涨跌比率
             StockPrice stockPrice_0 = new StockPrice();
             StockPrice stockPrice_1 = new StockPrice();
-            StockPrice stockPrice_yestoday_0 = stocks[0].getStockPrice(DateUtil.addDate(date, -1));//获取昨天的股票价格
-            StockPrice stockPrice_yestoday_1 = stocks[1].getStockPrice(DateUtil.addDate(date, -1));//获取昨天的股票价格
+            StockPrice stockPrice_yestoday_0 = stocks[0].getStockPrice(CalendarUtils.addDate(date, -1));//获取昨天的股票价格
+            StockPrice stockPrice_yestoday_1 = stocks[1].getStockPrice(CalendarUtils.addDate(date, -1));//获取昨天的股票价格
             double close_yestoday_0 = stockPrice_yestoday_0.close;//昨天的收盘价格
             double close_yestoday_1 = stockPrice_yestoday_1.close;//昨天的收盘价格
             stockPrice_0.open = b ? close_yestoday_0 * (1 + r) : close_yestoday_0 * (1 - r);
@@ -78,8 +78,8 @@ public class RandomStockPriceInit implements StockPriceInit {
             stocks[0].setStockPrice(date, stockPrice_0);
             stocks[1].setStockPrice(date, stockPrice_1);
             System.out.print("第" + (++i) + "天,");
-            System.out.print(stocks[0].name + ":\t" + DateUtil.dateFormat.format(date) + ":\t" + String.format("%.2f", stockPrice_0.close) + ":\t" + (b ? "+" : "-") + String.format("%2.0f", r * 100d) + "%");
-            System.out.println("\t" + stocks[1].name + ":\t" + DateUtil.dateFormat.format(date) + ":\t" + String.format("%.2f", stockPrice_1.close) + ":\t" + (!b ? "+" : "-") + String.format("%2.0f", r * 100d) + "%");
+            System.out.print(stocks[0].name + ":\t" + CalendarUtils.dateFormat.format(date) + ":\t" + String.format("%.2f", stockPrice_0.close) + ":\t" + (b ? "+" : "-") + String.format("%2.0f", r * 100d) + "%");
+            System.out.println("\t" + stocks[1].name + ":\t" + CalendarUtils.dateFormat.format(date) + ":\t" + String.format("%.2f", stockPrice_1.close) + ":\t" + (!b ? "+" : "-") + String.format("%2.0f", r * 100d) + "%");
         }
         return dates;
     }

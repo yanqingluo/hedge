@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class Oper2 extends Operation {
 
-    private Account account_period = null;
+    private Account account_period_begin = null;
 
     private StockPrice.PriceType priceType = StockPrice.PriceType.CLOSE;//用收盘价来计算
 
@@ -37,10 +37,12 @@ public class Oper2 extends Operation {
             for (Stock stock : account.stockWarehouse.keySet()) {
                 account.buy(stock, account.balance / buy_count--, priceType);
             }
-            account_period = account;
-        } else if (account_per_days.size() > 2) {
+            account_period_begin = account;
+            return;
+        }
+        if (account_per_days.size() > 2) {
             double total_current = account.getTotalStockValue(priceType);//当天总股值
-            double total_period = account_period.getTotalStockValue(priceType);//周期开始的总股值
+            double total_period = account_period_begin.getTotalStockValue(priceType);//周期开始的总股值
             double total_pre_day = account_per_days.get(account_per_days.size() - 2).getTotalStockValue(priceType);//昨天的总股值
             if (total_current > total_period &&
                     total_current <= total_pre_day) {
@@ -51,7 +53,7 @@ public class Oper2 extends Operation {
                 double diff = price_high - price_low;//计算差值(就是获利)
                 account.sell(stock_high, diff / 2, priceType);//把获利的一半卖出
                 account.buy(stock_low, diff / 2, priceType);//用获利的一半买入
-                account_period = account;
+                account_period_begin = account;
             }
         }
     }

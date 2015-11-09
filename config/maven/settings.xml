@@ -23,7 +23,7 @@
 
     <profiles>
         <profile>
-            <id>main</id>
+            <id>oschina</id>
             <repositories>
                 <repository>
                     <id>central</id>
@@ -57,6 +57,6 @@
 
     </profiles>
     <activeProfiles>
-        <activeProfile>main</activeProfile>
+        <activeProfile>oschina</activeProfile>
     </activeProfiles>
 </settings>

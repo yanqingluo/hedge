@@ -1,10 +1,10 @@
 package com.diorsunion.hedge.algo;
 
 import com.diorsunion.hedge.bo.Operation;
+import com.diorsunion.hedge.common.CalendarUtils;
 import com.diorsunion.hedge.dal.entity.Account;
 import com.diorsunion.hedge.dal.entity.Stock;
 import com.diorsunion.hedge.dal.entity.StockPrice;
-import com.diorsunion.hedge.util.DateUtil;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,7 +17,7 @@ public class Oper3 extends Operation {
 
     public static final String RATE = "R";
 
-    private Account account_period = null;
+    private Account account_period_begin = null;
 
     private StockPrice.PriceType priceType = StockPrice.PriceType.CLOSE;//用收盘价来计算
 
@@ -33,22 +33,28 @@ public class Oper3 extends Operation {
             for (Stock stock : account.stockWarehouse.keySet()) {
                 account.buy(stock, account.balance / buy_count--, priceType);
             }
-            account_period = account;
-        } else if (account_per_days.size() > 2) {
+            account_period_begin = account;
+            return;
+        }
+        if (account_per_days.size() > 2) {
             double total_current = account.getTotalStockValue(priceType);//当天总股值
-            double total_period = account_period.getTotalStockValue(priceType);//周期开始的总股值
+            double total_period = account_period_begin.getTotalStockValue(priceType);//周期开始的总股值
             BigDecimal r = new BigDecimal((total_current - total_period) * 100 / total_period).setScale(2, BigDecimal.ROUND_HALF_UP);
             if (r.intValue() >= params.get(RATE)) {
-                System.out.println("上一个周期开始:" + DateUtil.dateFormat.format(account_period.date) + ",总值:" + account_period.getTotalValueStr(priceType) +
-                        ",当前总值" + account.getTotalValueStr(priceType) + ",增长百分比达到" + String.format("%2.2f", r.doubleValue()) + "%,超过预期的" + params.get(RATE) + "%,开始操作");
+                System.out.println("上一个周期开始:" + CalendarUtils.dateFormat.format(account_period_begin.date) +
+                        ",资产净值:" + account_period_begin.getTotalValueStr(priceType) +
+                        ",当前资产净值" + account.getTotalValueStr(priceType) +
+                        ",收益率达到" + String.format("%2.2f", r.doubleValue()) +
+                        "%,超过预期的" + params.get(RATE) +
+                        "%,开始操作");
                 Stock stock_high = account.getHighest(priceType);
                 Stock stock_low = account.getLowest(priceType);
-                double price_high = account.getStockValue(stock_high, priceType);//得到当前股价
-                double price_low = account.getStockValue(stock_low, priceType);//得到周期初始的股价
-                double diff = price_high - price_low;//计算差值(就是获利)
+                double value_high = account.getStockValue(stock_high, priceType);//得到股票净值
+                double value_low = account.getStockValue(stock_low, priceType);//得到周期开始的股票净值
+                double diff = value_high - value_low;//计算获利
                 account.sell(stock_high, diff / 2, priceType);//把获利的一半卖出
                 account.buy(stock_low, diff / 2, priceType);//用获利的一半买入
-                account_period = account;
+                account_period_begin = account;
             }
         }
     }

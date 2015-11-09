@@ -15,12 +15,17 @@ public class Oper4 extends Operation {
 
     public static final String N = "N";
 
-    int n = 0;
+    int c = 0;
     private StockPrice.PriceType priceType = StockPrice.PriceType.CLOSE;//用收盘价来计算
 
     public Oper4(Map<String, Integer> params) {
         super(params);
     }
+
+    private int N() {
+        return params.containsKey(N) ? params.get(N) : 0;
+    }
+
 
     @Override
     public void oper(Account account, List<Account> account_per_days) {
@@ -30,17 +35,20 @@ public class Oper4 extends Operation {
             for (Stock stock : account.stockWarehouse.keySet()) {
                 account.buy(stock, account.balance / buy_count--, priceType);
             }
-        } else if (account_per_days.size() > 2) {
+            return;
+        }
+        if (account_per_days.size() > 2) {
             double total_current = account.getTotalStockValue(priceType);//当天总股值
             double total_period = account_per_days.get(account_per_days.size() - 2).getTotalStockValue(priceType);//周期开始的总股值
 
             if ((total_current - total_period) > 0) {
-                n++;
+                c++;
             } else {
-                n = 0;
+                c = 0;
             }
-            if (n > params.get(N)) {
-                System.out.println("单向增长" + n + "次,超过指定的" + params.get(N) + "次,进行操作");
+            int N = N();
+            if (c > N()) {
+                System.out.println("单向增长" + c + "次,超过指定的" + N + "次,进行操作");
                 Stock stock_high = account.getHighest(priceType);
                 Stock stock_low = account.getLowest(priceType);
                 double price_high = account.getStockValue(stock_high, priceType);//得到当前股价
@@ -48,7 +56,7 @@ public class Oper4 extends Operation {
                 double diff = price_high - price_low;//计算差值(就是获利)
                 account.sell(stock_high, diff / 2, priceType);//把获利的一半卖出
                 account.buy(stock_low, diff / 2, priceType);//用获利的一半买入
-                n = 0;
+                c = 0;
             }
         }
     }
