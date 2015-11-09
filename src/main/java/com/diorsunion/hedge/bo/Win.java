@@ -32,7 +32,7 @@ public class Win {
     static {
         opers.add(new Oper1(null));
         opers.add(new Oper2(null));
-        opers.add(new Oper3(ImmutableMap.of(Oper3.RATE, 1)));
+        opers.add(new Oper3(ImmutableMap.of(Oper3.PROFIT, 1, Oper3.LOSS, -1)));
         opers.add(new Oper4(ImmutableMap.of(Oper4.N, 2)));
         dataPriceInit = new RandomStockPriceInit();
         try {

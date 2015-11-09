@@ -15,7 +15,8 @@ import java.util.Map;
  */
 public class Oper3 extends Operation {
 
-    public static final String RATE = "R";
+    public static final String PROFIT = "P";//止盈率
+    public static final String LOSS = "L";//止损率
 
     private Account account_period_begin = null;
 
@@ -40,13 +41,15 @@ public class Oper3 extends Operation {
             double total_current = account.getTotalStockValue(priceType);//当天总股值
             double total_period = account_period_begin.getTotalStockValue(priceType);//周期开始的总股值
             BigDecimal r = new BigDecimal((total_current - total_period) * 100 / total_period).setScale(2, BigDecimal.ROUND_HALF_UP);
-            if (r.intValue() >= params.get(RATE)) {
+            Integer profit = params.get(PROFIT);
+            Integer loss = params.get(LOSS);
+            if (r.intValue() >= profit) {
                 System.out.println("上一个周期开始:" + CalendarUtils.dateFormat.format(account_period_begin.date) +
                         ",资产净值:" + account_period_begin.getTotalValueStr(priceType) +
                         ",当前资产净值" + account.getTotalValueStr(priceType) +
                         ",收益率达到" + String.format("%2.2f", r.doubleValue()) +
-                        "%,超过预期的" + params.get(RATE) +
-                        "%,开始操作");
+                        "%,超过预期的" + profit +
+                        "%,开始进行止盈操作");
                 Stock stock_high = account.getHighest(priceType);
                 Stock stock_low = account.getLowest(priceType);
                 double value_high = account.getStockValue(stock_high, priceType);//得到股票净值
@@ -55,6 +58,22 @@ public class Oper3 extends Operation {
                 account.sell(stock_high, diff / 2, priceType);//把获利的一半卖出
                 account.buy(stock_low, diff / 2, priceType);//用获利的一半买入
                 account_period_begin = account;
+            } else if (r.intValue() <= loss) {
+                System.out.println("上一个周期开始:" + CalendarUtils.dateFormat.format(account_period_begin.date) +
+                        ",资产净值:" + account_period_begin.getTotalValueStr(priceType) +
+                        ",当前资产净值" + account.getTotalValueStr(priceType) +
+                        ",损失率达到" + String.format("%2.2f", r.doubleValue()) +
+                        "%,超过预期的" + profit +
+                        "%,开始进行止损操作");
+                Stock stock_high = account.getHighest(priceType);
+                Stock stock_low = account.getLowest(priceType);
+                double value_high = account.getStockValue(stock_high, priceType);//得到股票净值
+                double value_low = account.getStockValue(stock_low, priceType);//得到周期开始的股票净值
+                double diff = value_high - value_low;//计算损失
+                account.sell(stock_high, diff / 2, priceType);//把损失的一半卖出
+                account.buy(stock_low, diff / 2, priceType);//用损失的一半买入
+                account_period_begin = account;
+
             }
         }
     }

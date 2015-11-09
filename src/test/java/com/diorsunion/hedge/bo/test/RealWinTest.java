@@ -8,6 +8,7 @@ import com.diorsunion.hedge.bo.Win;
 import com.diorsunion.hedge.common.CalendarUtils;
 import com.diorsunion.hedge.dal.entity.Account;
 import com.diorsunion.hedge.dal.entity.Stock;
+import com.diorsunion.hedge.dal.entity.StockPrice;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,20 +45,21 @@ public class RealWinTest {
     static {
 //        opers.add(new Oper1(null));
 //        opers.add(new Oper2(null));
-//        opers.add(new Oper3(ImmutableMap.of(Oper3.RATE, 1)));
+//        opers.add(new Oper3(ImmutableMap.of(Oper3.PROFIT, 1,Oper3.LOSS,-2)));
 //        opers.add(new Oper4(ImmutableMap.of(Oper4.N, 2)));
         opers.add(new Oper5(ImmutableMap.of(Oper5.PROFIT, 1, Oper5.LOSS, -1)));
-        stock_0.id = 8;
-        stock_0.name = "SQQQ";
-        stock_1.id = 9;
-        stock_1.name = "QQQ";
+        stock_0.id = 6;
+        stock_0.name = "YANG";
+        stock_1.id = 7;
+        stock_1.name = "YINN";
         try {
-            begin = CalendarUtils.dateFormat.parse("2015-01-01");
+            begin = CalendarUtils.dateFormat.parse("2015-06-01");
             end = CalendarUtils.dateFormat.parse("2015-11-05");
         } catch (ParseException e) {
             e.printStackTrace();
             System.exit(0);
         }
+
     }
 
     @Resource(name = "RealStockPriceInit")
@@ -69,7 +72,7 @@ public class RealWinTest {
         List<Date> dates = stockPriceInit.init(begin, end, stock_0, stock_1);
         for (Operation oper : opers) {
             System.out.println("----------------------------------------------------------------");
-            System.out.println("操作方法:" + oper.getDesc());
+
             List<Account> account_per_days = Lists.newArrayList();//每天的账户情况
             Account account = new Account(dates.get(0), init_money, stock_0, stock_1);//初始化一个账户
             account_per_days.add(account);
@@ -87,8 +90,13 @@ public class RealWinTest {
                 System.out.println();
                 account = nextAccount;
             }
+            double lastValue = account.getTotalValue(StockPrice.PriceType.CLOSE);
+            System.out.println("操作方法:" + oper.getDesc());
+            int days = CalendarUtils.getDiff(begin, end, Calendar.DATE);
+            System.out.println("操作" + days + "天,最终收益:" + String.format("%.2f", (lastValue - init_money) * 100 / init_money) + "%");
         }
         System.out.println("*--------------------------------------------------------------*");
+
     }
 
 

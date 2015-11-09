@@ -76,7 +76,7 @@ public class Oper5 extends Operation {
             double total_value = account.getTotalValue(priceType);//得到资产总净值
             double diff = value_high - total_value / 2;//计算差值(就是获利)
             account.sell(stock_high, diff / 2, priceType);//把获利的一半卖出
-            account.buy(empty_Stock, diff / 2, priceType);//用所有钱买空仓的那支股
+            account.buy(empty_Stock, account.balance, priceType);//用所有钱买空仓的那支股
             account_period_begin = account;
             empty_Stock = null;
             day_index = 0;
