@@ -19,6 +19,13 @@
         WHERE id = #{value}
     </select>
 
+    <select id="findAll" resultType="Stock" useCache="true">
+        <include refid="select_common"/>
+        <if test="start!=null and limit!=null">
+            LIMIT #{start},#{limit}
+        </if>
+    </select>
+
     <select id="findByIds" resultType="Stock" useCache="true">
         <include refid="select_common"/>
         <where>

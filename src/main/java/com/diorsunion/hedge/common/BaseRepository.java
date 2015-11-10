@@ -1,5 +1,7 @@
 package com.diorsunion.hedge.common;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +25,8 @@ public interface BaseRepository<E, ID extends Serializable> {
     Set<E> findToSet(E query);
 
     Set<E> findToSetByIds(List<ID> ids);
+
+    Set<E> findAll(@Param("start") Integer start, @Param("limit") Integer limit);
 
     int count(E query);
 }
