@@ -51,7 +51,7 @@ public class Account {
         }
         double cost = price * num;
         balance -= cost;//买股后增加这么多钱
-        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
+        System.out.println("\t" + CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
                 "买入[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量:" + num + ",总共花费:" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }
@@ -78,7 +78,7 @@ public class Account {
         }
         double cost = price * num;
         balance -= cost;//买股后增加这么多钱
-        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
+        System.out.println("\t" + CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
                 "买入[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量:" + num + ",总共花费" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }
@@ -105,7 +105,7 @@ public class Account {
         stockWarehouse.put(stock, stockWarehouse.get(stock) - num);
         double cost = price * num;
         balance += cost;//卖股后增加这么多钱
-        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
+        System.out.println("\t" + CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
                 "卖出[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量:" + num + ",总共获得" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }
@@ -128,7 +128,7 @@ public class Account {
         stockWarehouse.put(stock, stockWarehouse.get(stock) - num);
         double cost = price * num;
         balance += cost;//卖股后增加这么多钱
-        System.out.println(CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
+        System.out.println("\t" + CalendarUtils.getDateFormat(date) + ":用" + priceType.name +
                 "卖出[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量:" + num + ",总共获得" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }
@@ -150,7 +150,7 @@ public class Account {
         stockWarehouse.put(stock, stockWarehouse.get(stock) - num);
         double cost = price * num;
         balance += cost;//卖股后增加这么多钱
-        System.out.println(CalendarUtils.getDateFormat(date) +
+        System.out.println("\t" + CalendarUtils.getDateFormat(date) +
                 ":用" + priceType.name + "卖出[" + stock.name + "],单价:" + String.format("%.2f", price) +
                 ",数量" + num + ",总共获得" + String.format("%.2f", cost) + "元,余额:" + String.format("%.2f", balance) + "元");
     }

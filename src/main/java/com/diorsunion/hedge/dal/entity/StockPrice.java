@@ -133,6 +133,8 @@ public class StockPrice implements Serializable {
                 ", 收盘=" + new BigDecimal(close).setScale(2, BigDecimal.ROUND_HALF_UP) +
                 ", 最低=" + new BigDecimal(low).setScale(2, BigDecimal.ROUND_HALF_UP) +
                 ", 最高=" + new BigDecimal(high).setScale(2, BigDecimal.ROUND_HALF_UP) +
+                ", mcad=" + new BigDecimal(macd).setScale(2, BigDecimal.ROUND_HALF_UP) +
+                ", 均5=" + new BigDecimal(ma5).setScale(2, BigDecimal.ROUND_HALF_UP) +
                 ']';
     }
 

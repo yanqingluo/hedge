@@ -32,4 +32,8 @@ public abstract class Operation {
     public abstract void oper(Account account, List<Account> account_per_days);
 
     public abstract String getDesc();
+
+    protected String printMoney(double d) {
+        return String.format("%.2f", d);
+    }
 }

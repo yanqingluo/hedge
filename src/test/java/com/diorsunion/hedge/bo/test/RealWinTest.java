@@ -2,6 +2,7 @@ package com.diorsunion.hedge.bo.test;
 
 import com.diorsunion.dbtest.spring.DBTestClassRunner;
 import com.diorsunion.hedge.algo.Oper5;
+import com.diorsunion.hedge.algo.Oper6;
 import com.diorsunion.hedge.bo.Operation;
 import com.diorsunion.hedge.bo.StockPriceInit;
 import com.diorsunion.hedge.bo.Win;
@@ -47,14 +48,15 @@ public class RealWinTest {
 //        opers.add(new Oper2(null));
 //        opers.add(new Oper3(ImmutableMap.of(Oper3.PROFIT, 1,Oper3.LOSS,-2)));
 //        opers.add(new Oper4(ImmutableMap.of(Oper4.N, 2)));
-        opers.add(new Oper5(ImmutableMap.of(Oper5.PROFIT, 1, Oper5.LOSS, -1)));
+//        opers.add(new Oper5(ImmutableMap.of(Oper5.PROFIT, 1, Oper5.LOSS, -1)));
+        opers.add(new Oper6(ImmutableMap.of(Oper6.PROFIT, 1, Oper5.LOSS, -1)));
         stock_0.id = 6;
         stock_0.name = "YANG";
         stock_1.id = 7;
         stock_1.name = "YINN";
         try {
             begin = CalendarUtils.dateFormat.parse("2015-06-01");
-            end = CalendarUtils.dateFormat.parse("2015-11-05");
+            end = CalendarUtils.dateFormat.parse("2015-11-10");
         } catch (ParseException e) {
             e.printStackTrace();
             System.exit(0);
