@@ -3,7 +3,6 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
-    <import resource="classpath:springbeans-config.xml"/>
     <import resource="classpath:springbeans-ds.xml"/>
     <import resource="classpath:springbeans-mvc.xml"/>
     <import resource="classpath:springbeans-mybatis.xml"/>
